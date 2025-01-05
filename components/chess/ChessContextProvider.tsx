@@ -46,6 +46,17 @@ export default function ChesstContextProvider({
   const [targetSquare, setTargetSquare] = useState<string>("");
   const [applyCustomStyles, setApplyCustomStyles] = useState(true);
 
+  console.log(
+    `--- Current State ---\n
+    Socket: ${socket}\n
+    Join Message: ${joinMessage}\n
+    Side: ${side}\n
+    turn: ${game.turn()}\n
+    Valid Moves: ${JSON.stringify(validMoves)}\n
+    Target Square: ${targetSquare}\n
+    Apply Custom Styles: ${applyCustomStyles}`
+  );
+
   const makeAMove = useCallback(
     (
       move: { from: string; to: string; promotion?: string },
@@ -56,7 +67,12 @@ export default function ChesstContextProvider({
       let result: Move | null = null;
       try {
         result = gameCopy.move(move);
-        console.log("result: ", result, "\n\n\n", gameCopy, game.fen());
+        console.log(
+          `\n--- MakeMove ---\nResult: ${result}\n\nGame Copy:`,
+          gameCopy,
+          result,
+          `\nCurrent FEN: ${game.fen()}\n`
+        );
       } catch (err) {
         toast.error("invalid move");
       }
@@ -115,9 +131,20 @@ export default function ChesstContextProvider({
     if (game.turn() === "b" && side === "W") return;
 
     const moves = game.moves({ square, verbose: true });
+    console.log(
+      `--- onPieceClick ---\nMoves:`,
+      moves,
+      "\npiece: ",
+      piece,
+      "\nsquare: ",
+
+      square,
+      "\n"
+    );
     const uniqueMoves = moves.filter(
       (move, index, self) => index === self.findIndex((m) => m.to === move.to)
     );
+
     setValidMoves(uniqueMoves.map((move) => move.to));
     setTargetSquare(square);
   }
@@ -161,7 +188,7 @@ export default function ChesstContextProvider({
       );
   }, [side, socket, joinMessage?.gameId]);
 
-  // check for gameOver ccase
+  // check for gameOver case
   useEffect(() => {
     if (game.isGameOver()) {
       toast.success("game over");

@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function MainNav() {
   return (
-    <div className="flex gap-4 sm-phone:gap-0 justify-start items-center sm-phone:flex-col flex-row sm-phone:h-screen ">
+    <div className="flex gap-4  sm-phone:gap-0 justify-start items-center sm-phone:flex-col flex-row sm-phone:h-screen">
       <Logo />
 
       <nav className=" sm-phone:mt-8  text-white  sm-phone:w-full  ">

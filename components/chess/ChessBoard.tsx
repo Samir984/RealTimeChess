@@ -72,6 +72,7 @@ export default function ChessBoard({
 
   useEffect(() => {
     const updateBoardWidth = () => {
+      console.log("poll");
       const width = window.innerWidth;
       if (width < 640) {
         setBoardWidth(350);
@@ -84,18 +85,14 @@ export default function ChessBoard({
       }
     };
 
-    // Manual debounce for resize event
-    let resizeTimeout: NodeJS.Timeout;
     const handleResize = () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(updateBoardWidth, 100);
+      updateBoardWidth();
     };
 
     updateBoardWidth();
     window.addEventListener("resize", handleResize);
 
     return () => {
-      clearTimeout(resizeTimeout);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
@@ -118,7 +115,10 @@ export default function ChessBoard({
   );
 
   return (
-    <div className="relative" style={{ width: `${boardWidth}px` }}>
+    <div
+      className="relative"
+      style={{ minWidth: `${boardWidth}px`, minHeight: `${boardWidth}px` }}
+    >
       <Chessboard
         boardWidth={boardWidth}
         boardOrientation={orientation}
@@ -136,7 +136,7 @@ export default function ChessBoard({
 
         return (
           <div
-            key={square} // Use square as a unique key
+            key={square}
             style={{
               position: "absolute",
               top: `${top + squareSize / 2}px`,
