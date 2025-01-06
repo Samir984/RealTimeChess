@@ -2,9 +2,9 @@
 import { Chessboard } from "react-chessboard";
 import { useGameContext } from "./ChessContextProvider";
 import { useEffect, useState, useCallback, useMemo } from "react";
-import toast from "react-hot-toast";
 import CustomeKingPieces, { KingStatus } from "./CustomeKingPieces";
 import { Chess } from "chess.js";
+import { toast } from "react-toastify";
 
 export default function ChessBoard({
   orientation,
@@ -43,7 +43,7 @@ export default function ChessBoard({
     (game: Chess, kingColor: "w" | "b"): KingStatus => {
       if (game.isGameOver()) {
         if (game.isDraw()) {
-          toast.success("game is draw");
+          toast("game is draw");
           return "D";
         }
         return game.isCheckmate() && game.turn() === kingColor ? "L" : "W";

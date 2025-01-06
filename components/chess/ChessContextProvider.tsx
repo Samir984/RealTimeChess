@@ -8,9 +8,10 @@ import React, {
   useCallback,
 } from "react";
 import { Chess, Move, Square } from "chess.js";
-import toast from "react-hot-toast";
+
 import { MakeSound } from "@/utils/sound";
 import { useSocket } from "@/provider/SocketProvider";
+import { toast } from "react-toastify";
 
 interface ChessContextType {
   game: Chess;

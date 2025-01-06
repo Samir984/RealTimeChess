@@ -8,10 +8,10 @@ import Loader from "@/components/Loader";
 import ClipboardCopy from "@/components/ClipboardCopy";
 import { User } from "next-auth";
 import { useSocket } from "@/provider/SocketProvider";
-import toast from "react-hot-toast";
 import { socketCloseHandler } from "@/utils/helper";
 import { useEffect, useState } from "react";
 import { IoMdCloseCircle } from "react-icons/io";
+import { toast } from "react-toastify";
 
 interface UserInfoProps {
   user: User;

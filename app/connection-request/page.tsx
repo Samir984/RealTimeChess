@@ -3,10 +3,10 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import toast from "react-hot-toast";
 import { useSocket } from "@/provider/SocketProvider";
 import Loader from "@/components/Loader";
 import { replaceUnderscores } from "@/utils/helper";
+import { toast } from "react-toastify";
 
 interface PlayerProps {
   image: string;
