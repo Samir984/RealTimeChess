@@ -4,6 +4,7 @@ import { useGameContext } from "./ChessContextProvider";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import toast from "react-hot-toast";
 import CustomeKingPieces, { KingStatus } from "./CustomeKingPieces";
+import { Chess } from "chess.js";
 
 export default function ChessBoard({
   orientation,
@@ -11,19 +12,35 @@ export default function ChessBoard({
   orientation: "white" | "black";
 }) {
   const [boardWidth, setBoardWidth] = useState<number>(660);
+  const [applyCustomeKingPieces, setApplyCustomeKingPieces] = useState(false);
+  const [applyCustomeSquareStyle, setApplyCustomeSquareStyle] = useState(false);
+
   const squareSize = useMemo(() => boardWidth / 8, [boardWidth]);
 
-  const {
-    game,
-    validMoves,
-    applyCustomStyles,
-    onDrop,
-    onSquareClick,
-    onPieceClick,
-  } = useGameContext();
+  const { game, validMoves, onDrop, onSquareClick, onPieceClick } =
+    useGameContext();
+
+  const getKingPosition = useCallback(
+    (game: Chess, color: "w" | "b"): string => {
+      const board = game.board().flat();
+      const kingIndex = board.findIndex(
+        (piece) => piece && piece.type === "k" && piece.color === color
+      );
+
+      const rank = Math.floor(kingIndex / 8);
+      const file = kingIndex % 8;
+
+      // Convert to chess notation
+      const fileLetter = String.fromCharCode(97 + file);
+      const square = `${fileLetter}${8 - rank}`;
+      return square;
+    },
+    []
+  );
+  console.log(applyCustomeKingPieces, applyCustomeSquareStyle, "render\n\n\n");
 
   const getKingStatus = useCallback(
-    (kingColor: "w" | "b"): KingStatus => {
+    (game: Chess, kingColor: "w" | "b"): KingStatus => {
       if (game.isGameOver()) {
         if (game.isDraw()) {
           toast.success("game is draw");
@@ -33,7 +50,7 @@ export default function ChessBoard({
       }
       return null;
     },
-    [game]
+    []
   );
 
   const getSquarePosition = useCallback(
@@ -50,25 +67,59 @@ export default function ChessBoard({
     [squareSize]
   );
 
+  const customSquareStyles = useMemo(() => {
+    const styles: { [key: string]: React.CSSProperties } = {};
+
+    if (game.isCheck()) {
+      const kingColor = game.turn();
+      const kingSquare = getKingPosition(game, kingColor);
+
+      if (kingSquare) {
+        styles[kingSquare] = {
+          background: "linear-gradient(135deg, #feb2b2, #f56565)",
+          border: "2px solid #e53e3e",
+          borderRadius: "6px",
+          boxShadow: "0 0 10px rgba(245, 101, 101, 0.6)",
+        };
+      }
+      return styles;
+    }
+
+    return styles;
+  }, [game, getKingPosition]);
+
   const kingCustomPieces = useMemo(
     () => ({
       wK: ({ squareWidth }: { squareWidth: number }) => (
         <CustomeKingPieces
           color="white"
-          status={getKingStatus("w")}
+          status={getKingStatus(game, "w")}
           squareWidth={squareWidth}
         />
       ),
       bK: ({ squareWidth }: { squareWidth: number }) => (
         <CustomeKingPieces
           color="black"
-          status={getKingStatus("b")}
+          status={getKingStatus(game, "b")}
           squareWidth={squareWidth}
         />
       ),
     }),
-    [getKingStatus]
+    [game, getKingStatus]
   );
+
+  // apply side effect with deplay
+  useEffect(() => {
+    setTimeout(() => {
+      console.log("running \n\n\n");
+      game.isCheck()
+        ? setApplyCustomeSquareStyle(true)
+        : setApplyCustomeSquareStyle(false);
+      game.isGameOver()
+        ? setApplyCustomeKingPieces(true)
+        : setApplyCustomeKingPieces(false);
+    }, 300);
+  }, [game]);
 
   useEffect(() => {
     const updateBoardWidth = () => {
@@ -126,10 +177,12 @@ export default function ChessBoard({
         onPieceDrop={onDrop}
         onSquareClick={onSquareClick}
         onPieceClick={onPieceClick}
-        customSquareStyles={{}}
+        customSquareStyles={
+          applyCustomeSquareStyle ? customSquareStyles : undefined
+        }
         customDarkSquareStyle={{ backgroundColor: "#0e7490" }}
         customLightSquareStyle={{ backgroundColor: "#cbd5e1" }}
-        customPieces={applyCustomStyles ? kingCustomPieces : undefined}
+        customPieces={applyCustomeKingPieces ? kingCustomPieces : undefined}
       />
       {adjustedValidMoves.map((square) => {
         const { top, left } = getSquarePosition(square);

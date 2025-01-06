@@ -193,10 +193,6 @@ export default function ChesstContextProvider({
     if (game.isGameOver()) {
       toast.success("game over");
       handelGameTermination();
-      const timer = setTimeout(() => setApplyCustomStyles(true), 300);
-      return () => clearTimeout(timer);
-    } else {
-      setApplyCustomStyles(false);
     }
   }, [game, handelGameTermination]);
 

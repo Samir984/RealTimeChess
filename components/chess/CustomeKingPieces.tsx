@@ -1,4 +1,5 @@
 import { useSocket } from "@/provider/SocketProvider";
+// import { FaCrown } from "react-icons/fa";
 
 export type KingStatus = "W" | "L" | "D" | null;
 
@@ -53,8 +54,8 @@ export default function CustomeKingPieces({
       </svg>
       {status && (
         <div
-          className="absolute top-0 left-[80%] -translate-x-1/2 text-xs font-meidum phone:text-sm phone:font-semibold tablet:text-base tablet:font-bold "
-          style={{ color }}
+          className="absolute top-0 left-[80%] -translate-x-1/2 text-xs font-meidum phone:text-sm phone:font-semibold tablet:text-base tablet:font-bold -z-10"
+          style={{ color: kingColor }}
         >
           {status}
         </div>

@@ -33,10 +33,10 @@ export default function MainNav() {
 
 export function Logo() {
   return (
-    <Link href="/" className="sm-phone:w-full w-fit">
+    <Link href="/" className="sm-phone:w-full min-w-16">
       <div className="flex   py-6 px-1   items-center justify-center  h-10 gap-2 font-semibold text-3xl w-full   font-sans text-center bg-white">
         <span className="text-4xl hidden phone:block">Chess</span>
-        <div className="flex ">
+        <div className="flex flex-shrink-0 ">
           <Image
             src={"/chess.png"}
             width={40}
