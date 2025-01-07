@@ -72,13 +72,13 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!connetionMode || !email) return;
 
-    const ws = new WebSocket(
-      `wss://shine-holy-society.glitch.me/?userId=${email}&name=${name}&image=${image}&mode=${connetionMode}&inviterId=${inviterId}`
-    );
-
     // const ws = new WebSocket(
-    //   ws://localhost:8080?userId=${email}&name=${name}&image=${image}&mode=${connetionMode}&inviterId=${inviterId}
+    //   `wss://shine-holy-society.glitch.me/?userId=${email}&name=${name}&image=${image}&mode=${connetionMode}&inviterId=${inviterId}`
     // );
+
+    const ws = new WebSocket(
+      `ws://localhost:8080?userId=${email}&name=${name}&image=${image}&mode=${connetionMode}&inviterId=${inviterId}`
+    );
 
     ws.onopen = () => {
       console.log("WebSocket connection opened");
@@ -119,13 +119,19 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
     };
 
     ws.onclose = (e) => {
-      router.push("/online");
+      console.log(e.reason); // Log the reason for closure to the console
+
       setIsConnetingToSocket(false);
+
       if (ws.CLOSED === 3) {
         console.log("Socket closed:", ws.CLOSED);
         setConnectionMode(undefined);
       }
-      toast.error("WebSocket connection closed");
+
+      toast.error(
+        `WebSocket connection closed: ${e.reason || "Unknown reason"}`
+      );
+
       setSocket(null);
       resetState();
     };

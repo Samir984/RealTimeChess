@@ -90,7 +90,6 @@ const ConnectionButtons = ({
       timeOut = setTimeout(() => {
         if (isConnetingToSocket) {
           setShowCloseButton(true);
-
           toast.success(`Server is staring, it might take max 10-20 second`);
         }
       }, 4000);
