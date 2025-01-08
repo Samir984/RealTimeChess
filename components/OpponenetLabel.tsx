@@ -37,7 +37,7 @@ export default function OpponentLabel({
           alt="user-image"
           className="border-1 w-12 h-14 border-gray-700"
         />
-        <div className="flex flex-col  gap-1">
+        <div className="grid grid-rows-2 gap-1 ">
           <span className="text-sm font-bold">{name || "Opponent"}</span>
           <LoosePieces loosePieces={loosePieces} side={side} />
         </div>
