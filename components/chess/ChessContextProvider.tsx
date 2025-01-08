@@ -15,10 +15,10 @@ import { toast } from "react-toastify";
 
 interface ChessContextType {
   game: Chess;
-  side: null | "B" | "W" | "noMove";
+  side: undefined | "B" | "W" | "noMove";
   validMoves: string[];
   targetSquare: string;
-  setSide: (side: null | "B" | "W" | "noMove") => void;
+  setSide: React.Dispatch<React.SetStateAction<"B" | "W" | "noMove" | undefined>>
   makeAMove: (
     move: {
       from: string;
@@ -41,7 +41,7 @@ export default function ChesstContextProvider({
   children: ReactNode;
 }) {
   const { socket, joinMessage } = useSocket();
-  const [side, setSide] = useState<null | "B" | "W" | "noMove">(null);
+  const [side, setSide] = useState<undefined | "B" | "W" | "noMove">(undefined);
   const [game, setGame] = useState<Chess>(new Chess());
   const [validMoves, setValidMoves] = useState<string[]>([]);
   const [targetSquare, setTargetSquare] = useState<string>("");
