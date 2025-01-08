@@ -14,6 +14,7 @@ export default function PlayOnline() {
     router.push("/online");
     return;
   }
+  const opponentSide = joinMessage.side === "W" ? "B" : "W";
   console.log(joinMessage?.opponent, joinMessage);
 
   return (
@@ -23,13 +24,16 @@ export default function PlayOnline() {
       </h1>
       <div className="flex gap-2 phone:gap-4 flex-col items-center">
         <div>
-          <OpponenetLabel opponentLabel={joinMessage.opponent} />
           <ChesstContextProvider>
+            <OpponenetLabel
+              opponentLabel={joinMessage.opponent}
+              opponentSide={opponentSide}
+            />
             <ChessBoard
               orientation={joinMessage.side == "W" ? "white" : "black"}
             />
+            <YourLabel yourSide={joinMessage.side} />
           </ChesstContextProvider>
-          <YourLabel />
         </div>
       </div>
     </div>

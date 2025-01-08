@@ -10,11 +10,14 @@ export default function Home() {
         Offline Mode
       </h1>
       <div className="flex gap-2 phone:gap-4 flex-col items-center">
-        <OpponenetLabel opponentLabel={{ name: "Opponent", image: null }} />
         <ChesstContextProvider>
+          <OpponenetLabel
+            opponentLabel={{ name: "Opponent", image: null }}
+            opponentSide="B"
+          />
           <ChessBoard orientation="white" />
+          <YourLabel yourSide="W" />
         </ChesstContextProvider>
-        <YourLabel />
       </div>
     </div>
   );

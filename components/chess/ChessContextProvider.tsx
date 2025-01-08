@@ -15,11 +15,10 @@ import { toast } from "react-toastify";
 
 interface ChessContextType {
   game: Chess;
-  side: null | "B" | "W" | "noMove";
+  side: undefined | "B" | "W" | "noMove";
   validMoves: string[];
   targetSquare: string;
-  applyCustomStyles: boolean;
-  setSide: (side: null | "B" | "W" | "noMove") => void;
+  setSide: React.Dispatch<React.SetStateAction<"B" | "W" | "noMove" | undefined>>
   makeAMove: (
     move: {
       from: string;
@@ -29,6 +28,7 @@ interface ChessContextType {
     send: boolean
   ) => Move | null;
   onDrop: (sourceSquare: string, targetSquare: string) => boolean;
+  capturedPieces: { W: string[]; B: string[] };
   onSquareClick: (square: string) => void;
   onPieceClick: (piece: string, square: Square) => void;
 }
@@ -41,11 +41,17 @@ export default function ChesstContextProvider({
   children: ReactNode;
 }) {
   const { socket, joinMessage } = useSocket();
-  const [side, setSide] = useState<null | "B" | "W" | "noMove">(null);
+  const [side, setSide] = useState<undefined | "B" | "W" | "noMove">(undefined);
   const [game, setGame] = useState<Chess>(new Chess());
   const [validMoves, setValidMoves] = useState<string[]>([]);
   const [targetSquare, setTargetSquare] = useState<string>("");
-  const [applyCustomStyles, setApplyCustomStyles] = useState(true);
+  const [capturedPieces, setCapturedPieces] = useState<{
+    W: string[];
+    B: string[];
+  }>({
+    W: [],
+    B: [],
+  });
 
   console.log(
     `--- Current State ---\n
@@ -55,7 +61,23 @@ export default function ChesstContextProvider({
     turn: ${game.turn()}\n
     Valid Moves: ${JSON.stringify(validMoves)}\n
     Target Square: ${targetSquare}\n
-    Apply Custom Styles: ${applyCustomStyles}`
+    CapturedPieces: ${JSON.stringify(capturedPieces)}\n
+    `
+  );
+
+  const updateCapturedPieces = useCallback(
+    (move: Move, currentTurn: "b" | "w") => {
+      if (move && move.captured) {
+        const capturedSide = currentTurn === "w" ? "B" : "W";
+        const capturedPiece = move.captured;
+
+        setCapturedPieces((prev) => ({
+          ...prev,
+          [capturedSide]: [...prev[capturedSide], capturedPiece],
+        }));
+      }
+    },
+    []
   );
 
   const makeAMove = useCallback(
@@ -79,6 +101,9 @@ export default function ChesstContextProvider({
       }
 
       if (result) {
+        console.log(result);
+        // result of move and previous game state
+        updateCapturedPieces(result, game.turn());
         if (send) {
           socket?.send(
             JSON.stringify({
@@ -97,7 +122,7 @@ export default function ChesstContextProvider({
 
       return result;
     },
-    [game, socket, joinMessage?.gameId]
+    [game, updateCapturedPieces, socket, joinMessage?.gameId]
   );
 
   function onDrop(sourceSquare: string, targetSquare: string): boolean {
@@ -210,7 +235,7 @@ export default function ChesstContextProvider({
         side,
         validMoves,
         targetSquare,
-        applyCustomStyles,
+        capturedPieces,
         setSide,
         makeAMove,
         onDrop,
