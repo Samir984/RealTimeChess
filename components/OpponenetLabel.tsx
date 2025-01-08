@@ -1,7 +1,8 @@
-import { useSocket } from "@/provider/SocketProvider";
+"use client";
 import Image from "next/image";
 import React from "react";
 import GameQuitButton from "./buttons/GameQuitButton";
+import { useGameContext } from "./chess/ChessContextProvider";
 
 type OpponentLabelType = {
   name: string;
@@ -13,6 +14,7 @@ export default function OpponentLabel({
 }: {
   opponentLabel: OpponentLabelType;
 }) {
+  const { capturedPieces } = useGameContext();
   const { name, image } = opponentLabel;
   const isUser = false;
 

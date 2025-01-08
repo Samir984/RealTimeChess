@@ -23,13 +23,13 @@ export default function PlayOnline() {
       </h1>
       <div className="flex gap-2 phone:gap-4 flex-col items-center">
         <div>
-          <OpponenetLabel opponentLabel={joinMessage.opponent} />
           <ChesstContextProvider>
+          <OpponenetLabel opponentLabel={joinMessage.opponent} />
             <ChessBoard
               orientation={joinMessage.side == "W" ? "white" : "black"}
             />
-          </ChesstContextProvider>
           <YourLabel />
+          </ChesstContextProvider>
         </div>
       </div>
     </div>

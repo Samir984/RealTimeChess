@@ -4,8 +4,10 @@ import Image from "next/image";
 import React from "react";
 import GameQuitButton from "./buttons/GameQuitButton";
 import { useSocket } from "@/provider/SocketProvider";
+import { useGameContext } from "./chess/ChessContextProvider";
 
 export default function YourLabel() {
+  const { capturedPieces } = useGameContext();
   const { data: session } = useSession();
   const { socket } = useSocket();
   const isUser = true;
