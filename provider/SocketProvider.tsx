@@ -1,6 +1,5 @@
 "use client";
 
-import { getQueryParam } from "@/utils/helper";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, {

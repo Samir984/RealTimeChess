@@ -9,7 +9,7 @@ export default function Home() {
       <h1 className="text-2xl text-center tablet:text-3xl laptop:text-4xl font-bold mb-2 laptop:mb-6">
         Offline Mode
       </h1>
-      <div className="flex gap-2 phone:gap-4 flex-col items-center">
+      <div className="flex  flex-col items-center">
         <ChesstContextProvider>
           <OpponenetLabel
             opponentLabel={{ name: "Opponent", image: null }}

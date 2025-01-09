@@ -18,7 +18,7 @@ export default function GameQuitButton() {
   };
   return (
     <button
-      className="bg-red-500 text-white px-6 py-1 rounded hover:bg-red-600"
+      className="bg-red-500 text-white px-6 py-1 h-fit rounded hover:bg-red-600 self-center"
       onClick={quithandler}
     >
       Quit

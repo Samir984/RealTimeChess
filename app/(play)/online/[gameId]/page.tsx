@@ -18,7 +18,7 @@ export default function PlayOnline() {
   console.log(joinMessage?.opponent, joinMessage);
 
   return (
-    <div className=" text-white min-h-screen py-3  ">
+    <div className=" text-white min-h-screen py-3">
       <h1 className="text-2xl text-center tablet:text-3xl laptop:text-4xl font-bold mb-2 laptop:mb-6">
         Online Mode
       </h1>

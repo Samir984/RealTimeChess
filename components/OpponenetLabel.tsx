@@ -28,17 +28,19 @@ export default function OpponentLabel({
   const isUser = false;
 
   return (
-    <div className="flex justify-between w-[350px] phone:w-[450px] tablet:w-[550px] laptop:w-[660px] p-1 sm-phone:p-2  bg-gray-600 text-white border border-gray-700 rounded-lg shadow-lg">
+    <div className="flex justify-between mb-2 w-[350px] phone:w-[450px] tablet:w-[550px] laptop:w-[660px] py-0 px-1 phone:p-2  bg-gray-600 text-white border border-gray-700 phone:rounded-lg shadow-lg">
       <div className="flex  gap-2 sm-phone:gap-4  items-center ">
         <Image
           src={image || "/blackP.png"} // Fallback image
           width={42}
           height={42}
           alt="user-image"
-          className="border-1 w-12 h-14 border-gray-700"
+          className="border-1 phone:w-12 phone:h-14 w-10 h-10  border-gray-700"
         />
-        <div className="grid grid-rows-2 gap-1 ">
-          <span className="text-sm font-bold">{name || "Opponent"}</span>
+        <div className="grid grid-rows-2 phone:gap-1 ">
+          <span className="text-sm font-light phone:font-bold self-end phone:self-start ">
+            {name || "Opponent"}
+          </span>
           <LoosePieces loosePieces={loosePieces} side={side} />
         </div>
       </div>
