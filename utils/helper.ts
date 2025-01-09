@@ -1,3 +1,4 @@
+import { piecePoint } from "@/components/chess/ChessContextProvider";
 import { GameModeType } from "@/provider/SocketProvider";
 
 export function replaceUnderscores(name: string): string {
@@ -9,6 +10,19 @@ export function getQueryParam(queryParam: string, param: string) {
   const urlParams = new URLSearchParams(fullUrl.search);
 
   return urlParams.get(param);
+}
+
+export function calculatePoints(capturedPieces: { W: string[]; B: string[] }) {
+  const calculateTotalPoints = (pieces: string[]) => {
+    return pieces.reduce((total, piece) => {
+      return total + (piecePoint[piece as keyof typeof piecePoint] || 0);
+    }, 0);
+  };
+
+  const whitePoints = calculateTotalPoints(capturedPieces.W);
+  const blackPoints = calculateTotalPoints(capturedPieces.B);
+
+  return { white: whitePoints, black: blackPoints };
 }
 
 export function socketCloseHandler(

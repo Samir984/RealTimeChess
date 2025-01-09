@@ -18,7 +18,7 @@ export default function MainNav() {
               className="flex gap-4 justify-center phone:justify-normal items-center py-2 px-4 phone:rounded-lg hover:bg-gray-500 transition-colors w-full "
             >
               <MdOutlineOnlinePrediction size={32} />
-              <span className="text-xl hidden  phone:block">Play Online</span>
+              <span className="text-xl hidden  phone:block">Online</span>
             </Link>
           </li>
         </ul>

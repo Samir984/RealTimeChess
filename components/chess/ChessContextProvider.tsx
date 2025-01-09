@@ -6,19 +6,23 @@ import React, {
   useEffect,
   ReactNode,
   useCallback,
+  useMemo,
 } from "react";
 import { Chess, Move, Square } from "chess.js";
 
 import { MakeSound } from "@/utils/sound";
 import { useSocket } from "@/provider/SocketProvider";
 import { toast } from "react-toastify";
+import { calculatePoints } from "@/utils/helper";
 
 interface ChessContextType {
   game: Chess;
   side: undefined | "B" | "W" | "noMove";
   validMoves: string[];
   targetSquare: string;
-  setSide: React.Dispatch<React.SetStateAction<"B" | "W" | "noMove" | undefined>>
+  setSide: React.Dispatch<
+    React.SetStateAction<"B" | "W" | "noMove" | undefined>
+  >;
   makeAMove: (
     move: {
       from: string;
@@ -31,7 +35,19 @@ interface ChessContextType {
   capturedPieces: { W: string[]; B: string[] };
   onSquareClick: (square: string) => void;
   onPieceClick: (piece: string, square: Square) => void;
+  capturedPiecePoints: { W: number; B: number };
 }
+
+export type PieceType = "p" | "n" | "b" | "r" | "q" | "k";
+
+export const piecePoint: Record<PieceType, number> = {
+  p: 1, // Pawn
+  n: 3, // Knight
+  b: 3, // Bishop
+  r: 5, // Rook
+  q: 9, // Queen
+  k: 0, // King (not counted in total score)
+};
 
 const ChessContext = createContext<ChessContextType | undefined>(undefined);
 
@@ -53,6 +69,14 @@ export default function ChesstContextProvider({
     B: [],
   });
 
+  // State for storing the game points
+  const [capturedPiecePoints, setcapturedPiecePoints] = useState<{
+    W: number;
+    B: number;
+  }>({
+    W: 0,
+    B: 0,
+  });
   console.log(
     `--- Current State ---\n
     Socket: ${socket}\n
@@ -64,6 +88,18 @@ export default function ChesstContextProvider({
     CapturedPieces: ${JSON.stringify(capturedPieces)}\n
     `
   );
+  // Calculate the points whenever capturedPieces state changes
+  const points = useMemo(
+    () => calculatePoints(capturedPieces),
+    [capturedPieces]
+  );
+
+  useMemo(() => {
+    setcapturedPiecePoints({
+      W: points.white,
+      B: points.black,
+    });
+  }, [points]);
 
   const updateCapturedPieces = useCallback(
     (move: Move, currentTurn: "b" | "w") => {
@@ -236,6 +272,7 @@ export default function ChesstContextProvider({
         validMoves,
         targetSquare,
         capturedPieces,
+        capturedPiecePoints,
         setSide,
         makeAMove,
         onDrop,

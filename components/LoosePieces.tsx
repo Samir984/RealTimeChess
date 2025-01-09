@@ -1,6 +1,7 @@
 import Image from "next/image";
+import { useMemo } from "react";
+import { PieceType, useGameContext } from "./chess/ChessContextProvider";
 
-type PieceType = "p" | "n" | "b" | "r" | "q" | "k";
 type LoosePiecesProps = {
   loosePieces: string[];
   side: "W" | "B";
@@ -15,17 +16,30 @@ const pieceImages: Record<PieceType, { W: string; B: string }> = {
   k: { W: "/pieces/W_K.svg", B: "/pieces/B_K.svg" },
 };
 
+const piecePoint: Record<PieceType, number> = {
+  p: 1, // Pawn
+  n: 3, // Knight
+  b: 3, // Bishop
+  r: 5, // Rook
+  q: 9, // Queen
+  k: 0, // King (not counted in total score)
+};
+
 export default function LoosePieces({ loosePieces, side }: LoosePiecesProps) {
+  const { capturedPiecePoints } = useGameContext();
   // Calculate counts for each piece type
-  const pieceCounts = loosePieces.reduce<Record<PieceType, number>>(
-    (acc, piece) => {
-      if (piece in acc) {
-        acc[piece as PieceType]++;
-      }
-      return acc;
-    },
-    { p: 0, n: 0, b: 0, r: 0, q: 0, k: 0 }
-  );
+  const pieceCounts = useMemo(() => {
+    return loosePieces.reduce<Record<PieceType, number>>(
+      (acc, piece) => {
+        if (piece in acc) {
+          console.log(piece, acc);
+          acc[piece as PieceType]++;
+        }
+        return acc;
+      },
+      { p: 0, n: 0, b: 0, r: 0, q: 0, k: 0 }
+    );
+  }, [loosePieces]);
 
   return (
     <div className="flex items-center">
@@ -43,6 +57,12 @@ export default function LoosePieces({ loosePieces, side }: LoosePiecesProps) {
             </span>
           </div>
         ) : null
+      )}
+      {/* Display Total Score */}
+      {capturedPiecePoints[side] > 0 && (
+        <div className="text-[12px] flex items-center justify-center font-light sm-phone:font-semibold  bg-gray-900 p-1 ml-8">
+          +{capturedPiecePoints[side]}
+        </div>
       )}
     </div>
   );
