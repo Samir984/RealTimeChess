@@ -42,7 +42,7 @@ export default function LoosePieces({ loosePieces, side }: LoosePiecesProps) {
   }, [loosePieces]);
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center phone:h-auto h-[18px]">
       {Object.entries(pieceCounts).map(([piece, count]) =>
         count > 0 ? (
           <div key={piece} className="relative flex items-center">

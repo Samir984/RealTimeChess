@@ -18,7 +18,7 @@ export default function YourLabel({ yourSide }: { yourSide: "W" | "B" }) {
   const isUser = true;
 
   return (
-    <div className="flex justify-between mt-2 w-[350px] phone:w-[450px] tablet:w-[550px] laptop:w-[660px] py-0 px-1 phone:p-2  bg-gray-600 text-white border border-gray-700 phone:rounded-lg shadow-lg">
+    <div className="flex justify-between mt-2 w-[350px] phone:w-[450px] tablet:w-[550px] laptop:w-[660px] p-1 phone:p-2  bg-gray-600 text-white border border-gray-700 phone:rounded-lg shadow-lg">
       <div className="flex gap-2 sm-phone:gap-4 items-center">
         <Image
           src={session?.user?.image || "/whiteP.png"} // Fallback image
