@@ -3,7 +3,8 @@ import Image from "next/image";
 import React from "react";
 import GameQuitButton from "./buttons/GameQuitButton";
 import { useGameContext } from "./chess/ChessContextProvider";
-import LoosePieces from "./LoosePieces";
+import OpponenetCapturePieces from "./OpponenetCapturePieces";
+
 
 type OpponentLabelType = {
   name: string;
@@ -20,9 +21,11 @@ export default function OpponentLabel({
   //hard coded
   const side = opponentSide;
   const { capturedPieces } = useGameContext();
-  const loosePieces = capturedPieces[side];
 
-  console.log(capturedPieces[side], "o");
+
+  // reverse 
+  const anotherside=side==="W"?"B":"W"
+  const anotherPlayerLoosePieces = capturedPieces[anotherside];
 
   const { name, image } = opponentLabel;
   const isUser = false;
@@ -41,7 +44,7 @@ export default function OpponentLabel({
           <span className="text-sm font-light phone:font-bold self-end phone:self-start ">
             {name || "Opponent"}
           </span>
-          <LoosePieces loosePieces={loosePieces} side={side} />
+           <OpponenetCapturePieces pieces={anotherPlayerLoosePieces}   anotherside={anotherside} />
         </div>
       </div>
       {isUser ? <GameQuitButton /> : ""}

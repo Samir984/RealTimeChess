@@ -5,14 +5,16 @@ import React from "react";
 import GameQuitButton from "./buttons/GameQuitButton";
 import { useSocket } from "@/provider/SocketProvider";
 import { useGameContext } from "./chess/ChessContextProvider";
-import LoosePieces from "./LoosePieces";
+import LoosePieces from "./OpponenetCapturePieces";
+import OpponenetCapturePieces from "./OpponenetCapturePieces";
 
 export default function YourLabel({ yourSide }: { yourSide: "W" | "B" }) {
   const { socket } = useSocket();
   const side = yourSide;
   const { capturedPieces } = useGameContext();
-  console.log(capturedPieces[side], "y");
-  const loosePieces = capturedPieces[side];
+  // reverse 
+  const anotherside=side==="W"?"B":"W"
+  const anotherPlayerLoosePieces = capturedPieces[anotherside];
 
   const { data: session } = useSession();
   const isUser = true;
@@ -31,7 +33,7 @@ export default function YourLabel({ yourSide }: { yourSide: "W" | "B" }) {
           <span className="text-sm font-light phone:font-bold self-end phone:self-start">
             {session?.user?.name || "Player"}
           </span>
-          <LoosePieces loosePieces={loosePieces} side={side} />
+          <OpponenetCapturePieces pieces={anotherPlayerLoosePieces}   anotherside={anotherside} />
         </div>
       </div>
       {isUser && socket ? <GameQuitButton /> : ""}
