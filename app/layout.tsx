@@ -1,14 +1,31 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-import MainNav from "@/components/MainNav";
-import Provider from "@/provider/Provider";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';
+import MainNav from '@/components/MainNav';
+import Provider from '@/provider/Provider';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: "Chess | Let's have fun",
-  description: "chess game live-chess chess chess-nepal play chess in nepal ",
+  description: 'chess game live-chess chess chess-nepal play chess in nepal ',
+  verification: {
+    google: 'g4fkHswoWzzQ4C6BKI-frRO5ssRnTelcN8AsOTQrbRo',
+  },
+  icons: {
+    icon: '/favicon.ico',
+    // apple: '/favicons/apple-touch-icon.png',
+  },
+  applicationName: 'Chessconnect',
+  creator: 'Samir Neupane',
+  keywords: [
+    'Chess',
+    'Chessconnect',
+    'Chess Nepal',
+    'play chess with friends',
+    'Earn money playing chess',
+  ],
+  metadataBase: new URL('https://chessconnect.vercel.app/'),
 };
 
 export default function RootLayout({
@@ -34,3 +51,8 @@ export default function RootLayout({
     </html>
   );
 }
+
+<meta
+  name="google-site-verification"
+  content="g4fkHswoWzzQ4C6BKI-frRO5ssRnTelcN8AsOTQrbRo"
+/>;
