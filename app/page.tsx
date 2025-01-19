@@ -1,7 +1,8 @@
-import ChessBoard from "@/components/chess/ChessBoard";
-import ChesstContextProvider from "@/components/chess/ChessContextProvider";
-import OpponenetLabel from "@/components/OpponenetLabel";
-import YourLabel from "@/components/YourLabel";
+import ChessBoard from '@/components/chess/ChessBoard';
+import ChesstContextProvider from '@/components/chess/ChessContextProvider';
+import OpponenetLabel from '@/components/OpponenetLabel';
+import SideBar from '@/components/SideBar';
+import YourLabel from '@/components/YourLabel';
 
 export default function Home() {
   return (
@@ -9,16 +10,21 @@ export default function Home() {
       <h1 className="text-2xl text-center tablet:text-3xl laptop:text-4xl font-bold mb-2 laptop:mb-6">
         Offline Mode
       </h1>
-      <div className="flex  flex-col items-center">
-        <ChesstContextProvider>
-          <OpponenetLabel
-            opponentLabel={{ name: "Opponent", image: null }}
-            opponentSide="B"
-          />
-          <ChessBoard orientation="white" />
-          <YourLabel yourSide="W" />
-        </ChesstContextProvider>
-      </div>
+      <ChesstContextProvider>
+        <div className="flex px-1 laptop:flex-row flex-col gap-4 laptop:justify-evenly">
+          <div className="flex flex-1   gap-2 phone:gap-4 flex-col  ">
+            <OpponenetLabel
+              opponentLabel={{ name: 'Opponent', image: null }}
+              opponentSide="B"
+            />
+            <ChessBoard orientation="white" />
+            <YourLabel yourSide="W" />
+          </div>
+          <div className=" laptop:flex-1 mx-auto px-1">
+            <SideBar />
+          </div>
+        </div>
+      </ChesstContextProvider>
     </div>
   );
 }
