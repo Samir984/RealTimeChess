@@ -24,8 +24,8 @@ export default function OpponentLabel({
 
 
   // reverse 
-  const anotherside=side==="W"?"B":"W"
-  const anotherPlayerLoosePieces = capturedPieces[anotherside];
+
+  const anotherPlayerLoosePieces = capturedPieces[side];
 
   const { name, image } = opponentLabel;
   const isUser = false;
@@ -44,7 +44,7 @@ export default function OpponentLabel({
           <span className="text-sm font-light phone:font-bold self-end phone:self-start ">
             {name || "Opponent"}
           </span>
-           <OpponenetCapturePieces pieces={anotherPlayerLoosePieces}   anotherside={anotherside} />
+           <OpponenetCapturePieces pieces={anotherPlayerLoosePieces}   side={side} />
         </div>
       </div>
       {isUser ? <GameQuitButton /> : ""}

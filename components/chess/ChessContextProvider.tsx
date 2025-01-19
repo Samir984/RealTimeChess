@@ -35,7 +35,7 @@ interface ChessContextType {
   onDrop: (sourceSquare: string, targetSquare: string) => boolean;
   previousGameStep: Chess[];
   capturedPieces: { W: string[]; B: string[] };
-  viewPreviousGameState: (chess: Chess) => void;
+  viewPreviousGameState: (g: Chess, idx: number) => void;
   onSquareClick: (square: string) => void;
   onPieceClick: (piece: string, square: Square) => void;
   capturedPiecePoints: { W: number; B: number };
@@ -113,7 +113,8 @@ export default function ChesstContextProvider({
   const updateCapturedPieces = useCallback(
     (move: Move, currentTurn: 'b' | 'w') => {
       if (move && move.captured) {
-        const capturedSide = currentTurn === 'w' ? 'B' : 'W';
+        // console.log(currentTurn,game.turn())
+        const capturedSide = currentTurn === 'w' ? 'W' : 'B';
         const capturedPiece = move.captured;
         setCapturedPieces((prev) => ({
           ...prev,
@@ -124,17 +125,22 @@ export default function ChesstContextProvider({
     []
   );
 
-  const viewPreviousGameState = function (g: Chess, idx: number) {
-    if (g.fen().split('-')[0] === game.fen().split('-')[0]) return;
-    if (previousGameStep.length - 1 === idx) {
-      console.log('present move\n\n\n\n');
-      setRestrictMove(false);
-    } else {
-      setRestrictMove(true);
-    }
-    setGame(g);
-    new MakeSound(g);
-  };
+  const viewPreviousGameState = useCallback(
+    function (g: Chess, idx: number) {
+      if (g.fen().split('-')[0] === game.fen().split('-')[0]) return;
+      console.log(g.fen());
+      if (previousGameStep.length - 1 === idx) {
+        console.log('present move\n\n\n\n');
+        setRestrictMove(false);
+      } else {
+        setRestrictMove(true);
+      }
+      setGame(g);
+      new MakeSound(g);
+    },
+    [game, previousGameStep.length]
+  );
+
   const makeAMove = useCallback(
     (
       move: { from: string; to: string; promotion?: string },
@@ -244,6 +250,7 @@ export default function ChesstContextProvider({
       switch (data.type) {
         case 'move':
           toast.success('move');
+          setGame(previousGameStep[previousGameStep.length - 1]);
           makeAMove(data.move, false);
           break;
         case 'gameOver':
@@ -260,7 +267,7 @@ export default function ChesstContextProvider({
           toast.error(`Connection closed: ${data.message}`);
       }
     };
-  }, [socket, makeAMove]);
+  }, [socket, makeAMove, previousGameStep]);
 
   const handelGameTermination = useCallback(() => {
     if (side === 'W')

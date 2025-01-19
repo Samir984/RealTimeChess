@@ -1,19 +1,19 @@
-import Image from "next/image";
-import { useMemo } from "react";
-import { PieceType, useGameContext } from "./chess/ChessContextProvider";
+import Image from 'next/image';
+import { useMemo } from 'react';
+import { PieceType, useGameContext } from './chess/ChessContextProvider';
 
 type LoosePiecesProps = {
   pieces: string[];
-  anotherside: "W" | "B";
+  side: 'W' | 'B';
 };
 
 const pieceImages: Record<PieceType, { W: string; B: string }> = {
-  p: { W: "/pieces/W_P.svg", B: "/pieces/B_P.svg" },
-  n: { W: "/pieces/W_N.svg", B: "/pieces/B_N.svg" },
-  b: { W: "/pieces/W_B.svg", B: "/pieces/B_B.svg" },
-  r: { W: "/pieces/W_R.svg", B: "/pieces/B_R.svg" },
-  q: { W: "/pieces/W_Q.svg", B: "/pieces/B_Q.svg" },
-  k: { W: "/pieces/W_K.svg", B: "/pieces/B_K.svg" },
+  p: { W: '/pieces/W_P.svg', B: '/pieces/B_P.svg' },
+  n: { W: '/pieces/W_N.svg', B: '/pieces/B_N.svg' },
+  b: { W: '/pieces/W_B.svg', B: '/pieces/B_B.svg' },
+  r: { W: '/pieces/W_R.svg', B: '/pieces/B_R.svg' },
+  q: { W: '/pieces/W_Q.svg', B: '/pieces/B_Q.svg' },
+  k: { W: '/pieces/W_K.svg', B: '/pieces/B_K.svg' },
 };
 
 const piecePoint: Record<PieceType, number> = {
@@ -25,7 +25,10 @@ const piecePoint: Record<PieceType, number> = {
   k: 0, // King (not counted in total score)
 };
 
-export default function OpponenetCapturePieces({ pieces, anotherside }: LoosePiecesProps) {
+export default function OpponenetCapturePieces({
+  pieces,
+  side,
+}: LoosePiecesProps) {
   const { capturedPiecePoints } = useGameContext();
   // Calculate counts for each piece type
   const pieceCounts = useMemo(() => {
@@ -47,7 +50,7 @@ export default function OpponenetCapturePieces({ pieces, anotherside }: LoosePie
         count > 0 ? (
           <div key={piece} className="relative flex items-center">
             <Image
-              src={pieceImages[piece as PieceType][anotherside]} // Dynamically choose the image based on side
+              src={pieceImages[piece as PieceType][side === 'W' ? 'B' : 'W']} // Dynamically choose the image based on side
               alt={piece}
               width={28}
               height={28}
@@ -59,9 +62,9 @@ export default function OpponenetCapturePieces({ pieces, anotherside }: LoosePie
         ) : null
       )}
       {/* Display Total Score */}
-      {capturedPiecePoints[anotherside] > 0 && (
+      {capturedPiecePoints[side] > 0 && (
         <div className="text-[12px] flex items-center justify-center font-light sm-phone:font-semibold  bg-gray-900 p-1 ml-8">
-          +{capturedPiecePoints[anotherside]}
+          +{capturedPiecePoints[side]}
         </div>
       )}
     </div>

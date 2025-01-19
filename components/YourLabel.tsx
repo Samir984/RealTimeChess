@@ -13,8 +13,8 @@ export default function YourLabel({ yourSide }: { yourSide: 'W' | 'B' }) {
   const side = yourSide;
   const { capturedPieces } = useGameContext();
   // reverse
-  const anotherside = side === 'W' ? 'B' : 'W';
-  const anotherPlayerLoosePieces = capturedPieces[anotherside];
+
+  const anotherPlayerLoosePieces = capturedPieces[side];
 
   const { data: session } = useSession();
   const isUser = true;
@@ -35,7 +35,7 @@ export default function YourLabel({ yourSide }: { yourSide: 'W' | 'B' }) {
           </span>
           <OpponenetCapturePieces
             pieces={anotherPlayerLoosePieces}
-            anotherside={anotherside}
+            side={side}
           />
         </div>
       </div>
