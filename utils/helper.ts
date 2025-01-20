@@ -22,7 +22,7 @@ export function calculatePoints(capturedPieces: { W: string[]; B: string[] }) {
   const whitePoints = calculateTotalPoints(capturedPieces.W);
   const blackPoints = calculateTotalPoints(capturedPieces.B);
 
-  return { white: whitePoints, black: blackPoints };
+  return { W: whitePoints, B: blackPoints };
 }
 
 export function socketCloseHandler(

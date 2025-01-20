@@ -2,6 +2,7 @@
 import ChessBoard from '@/components/chess/ChessBoard';
 import ChesstContextProvider from '@/components/chess/ChessContextProvider';
 import OpponenetLabel from '@/components/OpponenetLabel';
+import SideBar from '@/components/SideBar';
 import YourLabel from '@/components/YourLabel';
 import { useSocket } from '@/provider/SocketProvider';
 import { useRouter } from 'next/navigation';
@@ -23,8 +24,8 @@ export default function PlayOnline() {
         Online Mode
       </h1>
       <ChesstContextProvider>
-        <div className="flex px-1 laptop:flex-row flex-col justify-evenly">
-          <div className="flex gap-2 phone:gap-4 flex-col  ">
+        <div className="flex px-1 laptop:flex-row flex-col gap-4 laptop:justify-evenly">
+          <div className="flex flex-1   gap-2 phone:gap-4 flex-col">
             <OpponenetLabel
               opponentLabel={joinMessage.opponent}
               opponentSide={opponentSide}
@@ -34,10 +35,8 @@ export default function PlayOnline() {
             />
             <YourLabel yourSide={joinMessage.side} />
           </div>
-          <div className="flex-1 shadow-2xl self-stretch ">
-            <div className=" laptop:max-w-80 ">
-              <div className="">Recent Move</div>
-            </div>
+          <div className=" laptop:flex-1 mx-auto px-1">
+            <SideBar />
           </div>
         </div>
       </ChesstContextProvider>

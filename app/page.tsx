@@ -12,7 +12,7 @@ export default function Home() {
       </h1>
       <ChesstContextProvider>
         <div className="flex px-1 laptop:flex-row flex-col gap-4 laptop:justify-evenly">
-          <div className="flex flex-1   gap-2 phone:gap-4 flex-col  ">
+          <div className="flex flex-1   gap-2 phone:gap-4 flex-col">
             <OpponenetLabel
               opponentLabel={{ name: 'Opponent', image: null }}
               opponentSide="B"
