@@ -37,7 +37,6 @@ export default function ChessBoard({
     },
     []
   );
-  console.log(applyCustomeKingPieces, applyCustomeSquareStyle, 'render\n\n\n');
 
   const getKingStatus = useCallback(
     (game: Chess, kingColor: 'w' | 'b'): KingStatus => {
@@ -111,7 +110,6 @@ export default function ChessBoard({
   // apply side effect with deplay
   useEffect(() => {
     setTimeout(() => {
-      console.log('running \n\n\n');
       game.isCheck()
         ? setApplyCustomeSquareStyle(true)
         : setApplyCustomeSquareStyle(false);
@@ -123,7 +121,6 @@ export default function ChessBoard({
 
   useEffect(() => {
     const updateBoardWidth = () => {
-      console.log('poll');
       const width = window.innerWidth;
       if (width < 640) {
         setBoardWidth(350);

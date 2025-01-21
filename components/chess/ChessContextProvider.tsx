@@ -89,28 +89,36 @@ export default function ChesstContextProvider({
   const [previousGameState, setPreviousGameState] = useState<
     PreviousGameState[]
   >([]);
-  // console.log(
-  //   `--- Current State ---\n
-  //   Socket: ${socket}\n
-  //   Join Message: ${joinMessage}\n
-  //   Side: ${side}\n
-  //   turn: ${game.turn()}\n
-  //   Valid Moves: ${JSON.stringify(validMoves)}\n
-  //   Target Square: ${targetSquare}\n
-  //   CapturedPieces: ${JSON.stringify(capturedPieces)}\n
-  //   RestrictMove: ${restrictMove}\n
+  console.log(
+    `--- Current State ---\n
+     Chess: ${game.fen()}
+     p: ${previousGameState[previousGameState.length - 1]?.chessFen},
+      
+     
+     `,
+    'make move out function\n\n\n\n',
+    game.fen() === previousGameState[previousGameState.length - 1]?.chessFen,
+    game.fen(),
+    previousGameState[previousGameState.length - 1]?.chessFen
 
-  //   `
-  // );
+    // Socket: ${socket}\n
+    // Join Message: ${joinMessage}\n
+    // Side: ${side}\n
+    // turn: ${game.turn()}\n
+    // Valid Moves: ${JSON.stringify(validMoves)}\n
+    // Target Square: ${targetSquare}\n
+    // CapturedPieces: ${JSON.stringify(capturedPieces)}\n
+    // RestrictMove: ${restrictMove}\n
+  );
 
   const updateCapturedPieces = useCallback(
     (move: Move, currentTurn: 'b' | 'w') => {
-      console.log(move, move.captured, 'top\n\n');
+      // console.log(move, move.captured, 'top\n\n');
 
       // Check if there's a captured piece
       if (move && move.captured === undefined) {
         const cpp = calculatePoints(capturedPieces);
-        console.log(capturedPieces, capturedPiecePoints, 'nocapture\n\n\n\n');
+        // console.log(capturedPieces, capturedPiecePoints, 'nocapture\n\n\n\n');
         return { cp: capturedPieces, cpp };
       } else {
         // If there is no captured piece, handle the regular move
@@ -124,14 +132,14 @@ export default function ChesstContextProvider({
         };
         setCapturedPieces(cp);
 
-        console.log(cp, 'c');
+        // console.log(cp, 'c');
         const cpp = calculatePoints(cp);
         setcapturedPiecePoints(cpp);
 
         return { cp, cpp };
       }
     },
-    [capturedPiecePoints, capturedPieces]
+    [capturedPieces]
   );
 
   const viewPreviousGameState = useCallback(
@@ -157,8 +165,21 @@ export default function ChesstContextProvider({
       move: { from: string; to: string; promotion?: string },
       send: boolean
     ): Move | null => {
-      console.log('make move function');
-      const gameCopy = new Chess(game.fen());
+      let gameCopy: Chess;
+      console.log(
+        'make move function\n\n\n\n',
+        game.fen() ===
+          previousGameState[previousGameState.length - 1]?.chessFen,
+        game.fen(),
+        previousGameState[previousGameState.length - 1]?.chessFen
+      );
+      if (restrictMove) {
+        const recentGs = previousGameState[previousGameState.length - 1];
+        viewPreviousGameState(recentGs, previousGameState.length - 1);
+        gameCopy = new Chess(recentGs.chessFen);
+      } else {
+        gameCopy = new Chess(game.fen());
+      }
 
       let result: Move | null = null;
       try {
@@ -171,7 +192,7 @@ export default function ChesstContextProvider({
         // result of move and previous game state
         const { cp, cpp } = updateCapturedPieces(result, game.turn());
         // updateCapturedPiecesFromCurrentFEN(gameCopy);
-        console.log(cp, cpp, 'return\n\n');
+        // console.log(cp, cpp, 'return\n\n');
 
         if (send) {
           socket?.send(
@@ -205,12 +226,20 @@ export default function ChesstContextProvider({
 
       return result;
     },
-    [game, updateCapturedPieces, socket, joinMessage?.gameId]
+    [
+      game,
+      previousGameState,
+      restrictMove,
+      viewPreviousGameState,
+      updateCapturedPieces,
+      socket,
+      joinMessage?.gameId,
+    ]
   );
 
   function onDrop(sourceSquare: string, targetSquare: string): boolean {
     if (side === 'noMove') return true;
-    console.log(side);
+    // console.log(side);
     if (restrictMove) return true;
 
     if (game.turn() === 'w' && side === 'B') return false;
@@ -261,20 +290,8 @@ export default function ChesstContextProvider({
       switch (data.type) {
         case 'move':
           toast.success('move');
-          if (restrictMove) {
-            const presentGameState = new Chess(
-              previousGameState[previousGameState.length - 1].chessFen
-            );
+          makeAMove(data.move, false);
 
-            alert('r');
-            setGame(presentGameState);
-            setTimeout(() => {
-              makeAMove(data.move, false);
-            }, 200);
-          } else {
-            alert('n');
-            makeAMove(data.move, false);
-          }
           break;
         case 'gameOver':
           console.log(data);
@@ -290,7 +307,14 @@ export default function ChesstContextProvider({
           toast.error(`Connection closed: ${data.message}`);
       }
     };
-  }, [socket, makeAMove, previousGameState, restrictMove]);
+  }, [
+    socket,
+    makeAMove,
+    previousGameState,
+    restrictMove,
+    viewPreviousGameState,
+    game,
+  ]);
 
   const handelGameTermination = useCallback(() => {
     if (side === 'W')
