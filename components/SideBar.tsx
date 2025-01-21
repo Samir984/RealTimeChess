@@ -15,10 +15,10 @@ export default function SideBar() {
   };
 
   return (
-    <div className="flex flex-col bg-gradient-to-br from-gray-800 via-gray-900 to-black shadow-2xl mx-auto min-h-full max-w-96 rounded-lg border border-gray-700">
-      <p className="text-center p-4 font-bold text-gray-200 text-lg tracking-wide border-b border-gray-700">
+    <div className="flex flex-col bg-gradient-to-br from-gray-800 via-gray-900 to-black shadow-2xl mx-auto min-h-full laptop:max-w-96 max-w-[360px] phone:max-w-[440px]  tablet:max-w-[540px] rounded-lg border border-gray-700">
+      <h1 className="text-center p-1 sm-phone:p-4 font-light tablet:font-bold text-gray-200 text-lg tracking-wide border-b border-gray-700">
         Recent Moves
-      </p>
+      </h1>
       <ul className="list-none pl-4 text-gray-300 divide-y divide-gray-700 h-52 overflow-y-scroll">
         {previousGameState.length > 0 ? (
           [...previousGameState].reverse().map((state, reversedIndex) => {

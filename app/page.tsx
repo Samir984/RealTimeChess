@@ -6,13 +6,13 @@ import YourLabel from '@/components/YourLabel';
 
 export default function Home() {
   return (
-    <div className=" text-white min-h-screen py-3  ">
+    <div className="text-white min-h-screen py-3  ">
       <h1 className="text-2xl text-center tablet:text-3xl laptop:text-4xl font-bold mb-2 laptop:mb-6">
         Offline Mode
       </h1>
       <ChesstContextProvider>
-        <div className="flex px-1 laptop:flex-row flex-col gap-4 laptop:justify-evenly">
-          <div className="flex flex-1   gap-2 phone:gap-4 flex-col">
+        <div className="flex justify-evenly  px-1 laptop:flex-row flex-col gap-4 ">
+          <div className="flex tablet:flex-1 gap-2 phone:gap-4 flex-col">
             <OpponenetLabel
               opponentLabel={{ name: 'Opponent', image: null }}
               opponentSide="B"
@@ -20,7 +20,7 @@ export default function Home() {
             <ChessBoard orientation="white" />
             <YourLabel yourSide="W" />
           </div>
-          <div className=" laptop:flex-1 mx-auto px-1">
+          <div className=" flex-1  px-1">
             <SideBar />
           </div>
         </div>
