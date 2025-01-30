@@ -1,8 +1,8 @@
-import ChessBoard from '@/components/chess/ChessBoard';
-import ChesstContextProvider from '@/components/chess/ChessContextProvider';
-import OpponenetLabel from '@/components/OpponenetLabel';
-import SideBar from '@/components/SideBar';
-import YourLabel from '@/components/YourLabel';
+import ChessBoard from "@/components/chess/ChessBoard";
+import ChesstContextProvider from "@/components/chess/ChessContextProvider";
+import OpponenetLabel from "@/components/OpponenetLabel";
+import SideBar from "@/components/SideBar";
+import YourLabel from "@/components/YourLabel";
 
 export default function Home() {
   return (
@@ -11,10 +11,10 @@ export default function Home() {
         Offline Mode
       </h1>
       <ChesstContextProvider>
-        <div className="flex justify-evenly  px-1 laptop:flex-row flex-col gap-4 ">
-          <div className="flex tablet:flex-1 gap-2 phone:gap-4 flex-col">
+        <div className="flex justify-evenly   laptop:flex-row flex-col  ">
+          <div className="flex tablet:flex-1 flex-col">
             <OpponenetLabel
-              opponentLabel={{ name: 'Opponent', image: null }}
+              opponentLabel={{ name: "Opponent", image: null }}
               opponentSide="B"
             />
             <ChessBoard orientation="white" />

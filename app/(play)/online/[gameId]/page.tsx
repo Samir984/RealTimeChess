@@ -1,21 +1,21 @@
-'use client';
-import ChessBoard from '@/components/chess/ChessBoard';
-import ChesstContextProvider from '@/components/chess/ChessContextProvider';
-import OpponenetLabel from '@/components/OpponenetLabel';
-import SideBar from '@/components/SideBar';
-import YourLabel from '@/components/YourLabel';
-import { useSocket } from '@/provider/SocketProvider';
-import { useRouter } from 'next/navigation';
+"use client";
+import ChessBoard from "@/components/chess/ChessBoard";
+import ChesstContextProvider from "@/components/chess/ChessContextProvider";
+import OpponenetLabel from "@/components/OpponenetLabel";
+import SideBar from "@/components/SideBar";
+import YourLabel from "@/components/YourLabel";
+import { useSocket } from "@/provider/SocketProvider";
+import { useRouter } from "next/navigation";
 
 export default function PlayOnline() {
   const { joinMessage } = useSocket();
   const router = useRouter();
 
   if (joinMessage === null) {
-    router.push('/online');
+    router.push("/online");
     return;
   }
-  const opponentSide = joinMessage.side === 'W' ? 'B' : 'W';
+  const opponentSide = joinMessage.side === "W" ? "B" : "W";
   console.log(joinMessage?.opponent, joinMessage);
 
   return (
@@ -24,14 +24,14 @@ export default function PlayOnline() {
         Online Mode
       </h1>
       <ChesstContextProvider>
-        <div className="flex justify-evenly  px-1 laptop:flex-row flex-col gap-4 ">
-          <div className="flex tablet:flex-1 gap-2 phone:gap-4 flex-col">
+        <div className="flex justify-evenly   laptop:flex-row flex-col  ">
+          <div className="flex tablet:flex-1 flex-col">
             <OpponenetLabel
               opponentLabel={joinMessage.opponent}
               opponentSide={opponentSide}
             />
             <ChessBoard
-              orientation={joinMessage.side == 'W' ? 'white' : 'black'}
+              orientation={joinMessage.side == "W" ? "white" : "black"}
             />
             <YourLabel yourSide={joinMessage.side} />
           </div>
