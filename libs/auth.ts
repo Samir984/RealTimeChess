@@ -1,8 +1,6 @@
 import NextAuth from "next-auth";
-import { PrismaClient } from "@prisma/client";
 import Google from "next-auth/providers/google";
 
-const prisma = new PrismaClient();
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [Google],
 
@@ -15,17 +13,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       console.log("signin callback", user);
 
       try {
-        const userExits = await prisma.user.findUnique({
-          where: { email: user?.email as string },
-        });
-        if (!userExits) {
-          const newUser = await prisma.user.create({
-            data: {
-              email: user.email as string,
-              fullName: user.name as string,
+        const response = await fetch(
+          "http://127.0.0.1:8000/api/users/register/",
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${process.env.MANAGER_AUTH_TOKEN}`,
+              "Content-Type": "application/json",
             },
-          });
-          console.log("user created \n\n\n");
+            body: JSON.stringify({
+              email: user.email,
+              first_name: user.name?.split(" ")[0],
+              last_name: user.name?.split(" ")[1] || "",
+              image: user.image,
+            }),
+          }
+        );
+        if (!response.ok) {
+          console.log(response.json);
+          return false;
         }
         return true;
       } catch (error) {
@@ -33,18 +39,37 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         return false;
       }
     },
-    async jwt({ token }) {
+    async jwt({ token, user }) {
       console.log("jwt callback /n/n");
-      // const user = await prisma.user.findUnique({
-      //   where: { email: token?.email as string },
-      // });
-      // token.userId = user?.id;
+      if (user) {
+        const response = await fetch(
+          `http://127.0.0.1:8000/api/users/?email=${user.email}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${process.env.MANAGER_AUTH_TOKEN}`,
+            },
+          }
+        );
+        if (response.ok) {
+          console.log("inside ok \n\n\n\n\n\n");
+          const data = await response.json();
+          console.log(data);
+          token.user_id = data.user_id;
+        }
+      }
+
       return token;
     },
     async session({ session, token }) {
-      console.log("session callback");
-      // session.user.userId = token.userId;
-      return session;
+      console.log("session callback", session, token);
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          user_id: token.user_id,
+        },
+      };
     },
   },
   pages: {

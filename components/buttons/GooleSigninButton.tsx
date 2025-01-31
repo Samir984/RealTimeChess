@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function GoogleSigninButton() {
   const { data: session } = useSession();
-  console.log(session);
+  console.log(session, session);
   return (
     <button
       className="text-white rounded-lg shadow-md ransition-all duration-300 w-full"
