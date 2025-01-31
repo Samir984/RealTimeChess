@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={`${inter.className} flex   bg-black h-screen w-screen`}>
         <Provider>
           <div className="flex  flex-col sm-phone:flex-row   w-full   ">
-            <header className="sm-phone:w-28 p-2 sm-phone:p-0  sm-phone:h-screen  phone:w-56 laptop:w-60 sm-phone:sticky sm-phone:top-0 sm-phone:left-0  block border-b-[1px] border-gray-500 sm-phone:border-r-[1px]  sm-phone:border-b-[0px] sticky top-0 left-0 bg-black z-10 ">
+            <header className="sm-phone:w-28 p-2 sm-phone:p-0  sm-phone:h-screen  phone:w-56  sm-phone:sticky sm-phone:top-0 sm-phone:left-0  block border-b-[1px] border-gray-500 sm-phone:border-r-[1px]  sm-phone:border-b-[0px] sticky top-0 left-0 bg-black z-10 ">
               <MainNav />
             </header>
             <main className="w-full overflow-y-scroll ">{children}</main>
