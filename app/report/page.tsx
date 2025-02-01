@@ -58,10 +58,13 @@ const ReportForm = () => {
         formDataToSend.append("image", formData.image);
       }
 
-      const response = await fetch("http://127.0.0.1:8000/api/reports/", {
-        method: "POST",
-        body: formDataToSend,
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_MANAGER_URL}api/reports/`,
+        {
+          method: "POST",
+          body: formDataToSend,
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();

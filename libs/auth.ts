@@ -11,10 +11,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async signIn({ user }) {
       console.log("signin callback", user);
-
+      console.log(process.env.NEXT_PUBLIC_MANAGER_URL);
       try {
         const response = await fetch(
-          "http://127.0.0.1:8000/api/users/register/",
+          `${process.env.NEXT_PUBLIC_MANAGER_URL}api/users/register/`,
           {
             method: "POST",
             headers: {
@@ -35,7 +35,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
         return true;
       } catch (error) {
-        console.log(error, "\n\n\n");
+        console.log("Error:", error, "\n\n\n");
         return false;
       }
     },
@@ -43,7 +43,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       console.log("jwt callback /n/n");
       if (user) {
         const response = await fetch(
-          `http://127.0.0.1:8000/api/users/?email=${user.email}`,
+          `${process.env.NEXT_PUBLIC_MANAGER_URL}api/users/?email=${user.email}`,
           {
             method: "GET",
             headers: {
@@ -51,6 +51,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
           }
         );
+        console.log(response);
         if (response.ok) {
           console.log("inside ok \n\n\n\n\n\n");
           const data = await response.json();
