@@ -68,7 +68,7 @@ const ReportForm = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to submit report");
+        throw new Error(errorData.detail || "Failed to submit report");
       }
 
       setFormData({ title: "", description: "", image: null });

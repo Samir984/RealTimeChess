@@ -35,7 +35,7 @@ export default function Page() {
           Connection with Player
         </h1>
 
-        <ConnectionButtons userId={session?.user?.email} />
+        <ConnectionButtons userId={session?.user?.userId} />
 
         <div className="flex flex-col items-center">
           {session?.user ? (

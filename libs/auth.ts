@@ -56,7 +56,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           console.log("inside ok \n\n\n\n\n\n");
           const data = await response.json();
           console.log(data);
-          token.user_id = data.user_id;
+          token.userId = data.user_id;
         }
       }
 
@@ -68,7 +68,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         ...session,
         user: {
           ...session.user,
-          user_id: token.user_id,
+          userId: token.userId,
         },
       };
     },

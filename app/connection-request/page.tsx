@@ -36,7 +36,7 @@ export default function Page() {
     setInviterId,
     isConnetingToSocket,
   } = useSocket();
-  const { email, name, image } = session?.user || {};
+  const { userId, name, image } = session?.user || {};
 
   const inviterId = searchParams.get("inviterId") as string;
   const inviterName = replaceUnderscores(
@@ -46,8 +46,8 @@ export default function Page() {
     searchParams.get("inviterImage")) as string;
 
   const handelJoining = function () {
-    if (!email) {
-      toast.error("Please login in first to play");
+    if (!userId) {
+      toast.error("Please login  first to play");
       return;
     }
     setIsConnetingToSocket(true);
