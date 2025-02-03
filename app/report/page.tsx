@@ -38,7 +38,7 @@ const ReportForm = () => {
     setSuccess(false);
 
     try {
-      if (!session?.user?.user_id) {
+      if (!session?.user?.userId) {
         throw new Error("You must be logged in to submit a report");
       }
 
@@ -49,7 +49,7 @@ const ReportForm = () => {
       const formDataToSend = new FormData();
       formDataToSend.append("title", formData.title);
       formDataToSend.append("description", formData.description);
-      formDataToSend.append("user_id", session.user.user_id);
+      formDataToSend.append("user_id", session.user.userId);
 
       if (formData.image) {
         if (formData.image.size > 5 * 1024 * 1024) {
