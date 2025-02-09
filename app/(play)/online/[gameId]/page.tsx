@@ -24,7 +24,7 @@ export default function PlayOnline() {
         Online Mode
       </h1>
       <ChesstContextProvider>
-        <div className="flex justify-evenly   laptop:flex-row flex-col  ">
+        <div className="flex justify-evenly gap-2  laptop:flex-row flex-col  ">
           <div className="flex tablet:flex-1 flex-col">
             <OpponenetLabel
               opponentLabel={joinMessage.opponent}
@@ -35,7 +35,7 @@ export default function PlayOnline() {
             />
             <YourLabel yourSide={joinMessage.side} />
           </div>
-          <div className=" flex-1  px-1">
+          <div className="flex-1  px-1">
             <SideBar />
           </div>
         </div>

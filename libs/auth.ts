@@ -10,8 +10,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return !!auth?.user;
     },
     async signIn({ user }) {
-      console.log("signin callback", user);
-      console.log(process.env.NEXT_PUBLIC_MANAGER_URL);
+      console.log("signin callback");
       try {
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_MANAGER_URL}api/users/register/`,
@@ -51,11 +50,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
           }
         );
-        console.log(response);
         if (response.ok) {
-          console.log("inside ok \n\n\n\n\n\n");
+          console.log("inside ok \n\n\n");
           const data = await response.json();
-          console.log(data);
           token.userId = data.user_id;
         }
       }
@@ -63,7 +60,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
     async session({ session, token }) {
-      console.log("session callback", session, token);
+      console.log("session callback");
       return {
         ...session,
         user: {

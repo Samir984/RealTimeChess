@@ -11,7 +11,7 @@ export default function Home() {
         Offline Mode
       </h1>
       <ChesstContextProvider>
-        <div className="flex justify-evenly   laptop:flex-row flex-col  ">
+        <div className="flex justify-evenly gap-2  laptop:flex-row flex-col  ">
           <div className="flex tablet:flex-1 flex-col">
             <OpponenetLabel
               opponentLabel={{ name: "Opponent", image: null }}

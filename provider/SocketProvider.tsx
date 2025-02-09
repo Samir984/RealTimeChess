@@ -71,13 +71,13 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!connetionMode || !userId) return;
 
-    const ws = new WebSocket(
-      `wss://shine-holy-society.glitch.me/?userId=${userId}&name=${name}&image=${image}&mode=${connetionMode}&inviterId=${inviterId}`
-    );
-
     // const ws = new WebSocket(
-    //   `ws://localhost:8080?userId=${userId}&name=${name}&image=${image}&mode=${connetionMode}&inviterId=${inviterId}`
+    //   `wss://shine-holy-society.glitch.me/?userId=${userId}&name=${name}&image=${image}&mode=${connetionMode}&inviterId=${inviterId}`
     // );
+
+    const ws = new WebSocket(
+      `ws://localhost:8080?userId=${userId}&name=${name}&image=${image}&mode=${connetionMode}&inviterId=${inviterId}`
+    );
 
     ws.onopen = () => {
       console.log("WebSocket connection opened");
