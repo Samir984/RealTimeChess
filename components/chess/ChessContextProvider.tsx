@@ -167,12 +167,18 @@ export default function ChesstContextProvider({
         // console.log(cp, cpp, 'return\n\n');
 
         if (send) {
+          const status = gameCopy.isGameOver()
+            ? "isGameOver"
+            : gameCopy.isDraw()
+            ? "isDraw"
+            : null;
           socket?.send(
             JSON.stringify({
               type: "move",
               data: {
-                nextTurn: game.turn() === "w" ? "B" : "W",
+                status,
                 gameId: joinMessage?.gameId,
+                sendTo: gameCopy.turn().toUpperCase(),
                 move,
               },
             })
@@ -253,7 +259,7 @@ export default function ChesstContextProvider({
     setTargetSquare(square);
   }
 
-  // for communcation after connetion
+  // for communication after connetion
   useEffect(() => {
     if (!socket) return;
     socket.onmessage = (e) => {
@@ -263,17 +269,13 @@ export default function ChesstContextProvider({
         case "move":
           toast.success("move");
           makeAMove(data.move, false);
-
-          break;
-        case "gameOver":
-          console.log(data);
-          toast.error(`Connection closed: ${data.message}`);
           break;
 
         case "unknown":
           console.log(data);
           toast.error(`Connection closed: ${data.message}`);
           break;
+
         case "quit":
           console.log(data);
           toast.error(`Connection closed: ${data.message}`);
@@ -288,25 +290,11 @@ export default function ChesstContextProvider({
     game,
   ]);
 
-  const handelGameTermination = useCallback(() => {
-    if (side === "W")
-      socket?.send(
-        JSON.stringify({
-          type: "gameOver",
-          data: {
-            gameId: joinMessage?.gameId,
-          },
-        })
-      );
-  }, [side, socket, joinMessage?.gameId]);
-
-  // check for gameOver case
   useEffect(() => {
     if (game.isGameOver()) {
       toast.success("game over");
-      handelGameTermination();
     }
-  }, [game, handelGameTermination]);
+  }, [game]);
 
   // to set side
   useEffect(() => {

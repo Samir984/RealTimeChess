@@ -58,7 +58,7 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
   const [connetionMode, setConnectionMode] = useState<GameModeType>(undefined);
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [joinMessage, setJoinMessage] = useState<JoinedMessage | null>(null);
-  const { email,userId, name, image } = session?.user || {};
+  const { email, userId, name, image } = session?.user || {};
 
   const resetState = () => {
     setIsConnetingToSocket(false);
@@ -119,26 +119,23 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
 
     ws.onclose = (e) => {
       console.log(e.reason); // Log the reason for closure to the console
-
       setIsConnetingToSocket(false);
-
       if (ws.CLOSED === 3) {
         console.log("Socket closed:", ws.CLOSED);
         setConnectionMode(undefined);
       }
-
       toast.error(
         `WebSocket connection closed: ${e.reason || "Unknown reason"}`
       );
 
       setSocket(null);
-      resetState();
+      // resetState();
     };
 
     return () => {
       ws.close();
     };
-  }, [connetionMode, email, name, image, router, inviterId]);
+  }, [connetionMode, email, name, image, router, inviterId, userId]);
 
   return (
     <SocketContext.Provider
