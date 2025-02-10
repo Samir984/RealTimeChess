@@ -167,11 +167,12 @@ export default function ChesstContextProvider({
         // console.log(cp, cpp, 'return\n\n');
 
         if (send) {
-          const status = gameCopy.isGameOver()
-            ? "isGameOver"
-            : gameCopy.isDraw()
+          const status = gameCopy.isDraw()
             ? "isDraw"
+            : gameCopy.isGameOver()
+            ? "isGameOver"
             : null;
+
           socket?.send(
             JSON.stringify({
               type: "move",
@@ -292,7 +293,7 @@ export default function ChesstContextProvider({
 
   useEffect(() => {
     if (game.isGameOver()) {
-      toast.success("game over");
+     //effect for game over
     }
   }, [game]);
 

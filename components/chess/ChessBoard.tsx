@@ -42,7 +42,6 @@ export default function ChessBoard({
     (game: Chess, kingColor: "w" | "b"): KingStatus => {
       if (game.isGameOver()) {
         if (game.isDraw()) {
-          toast("game is draw");
           return "D";
         }
         return game.isCheckmate() && game.turn() === kingColor ? "L" : "W";
