@@ -72,7 +72,7 @@ export default function SocketProvider({ children }: { children: ReactNode }) {
     if (!connetionMode || !userId) return;
 
     let ws;
-    if ((process.env.NEXT_PUBLIC_PRODUCTION = "true")) {
+    if ((process.env.NEXT_PUBLIC_PRODUCTION === "true")) {
       ws = new WebSocket(
         `wss://shine-holy-society.glitch.me/?userId=${userId}&name=${name}&image=${image}&mode=${connetionMode}&inviterId=${inviterId}`
       );
