@@ -27,7 +27,7 @@ const ReportForm = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({
       ...prev,
-      image: e.target.files?.[0] || null, // Safer null check
+      image: e.target.files?.[0] || null,
     }));
   };
 
@@ -85,7 +85,7 @@ const ReportForm = () => {
 
   console.log(formData);
   return (
-    <div className="min-h-screen flex items-center justify-center ">
+    <div className="min-h-screen p-2 flex items-center justify-center ">
       <div className="w-full max-w-md bg-gray-800 rounded-xl shadow-2xl p-8 border border-gray-700">
         <h1 className="text-2xl font-bold text-center text-gray-100 mb-6">
           Report Your Problem

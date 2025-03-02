@@ -2,6 +2,7 @@ import Image from "next/image";
 import { MdOutlineOnlinePrediction } from "react-icons/md";
 import GoogleSigninButton from "./buttons/GooleSigninButton";
 import { MdOutlineReportGmailerrorred } from "react-icons/md";
+import { IoPersonOutline } from "react-icons/io5";
 import Link from "next/link";
 
 export default function MainNav() {
@@ -9,7 +10,7 @@ export default function MainNav() {
     <div className="flex  sm-phone:gap-0 justify-start items-center sm-phone:flex-col flex-row sm-phone:h-screen bg-gray-black backdrop-blur-sm">
       <Logo />
 
-      <nav className="sm-phone:mt-8 text-gray-300 sm-phone:w-full">
+      <nav className="sm-phone:mt-4 text-gray-300 sm-phone:w-full">
         <ul className="sm-phone:w-full flex sm-phone:flex-col gap-1 w-fit">
           <li className="flex w-full phone:block">
             <Link
@@ -22,6 +23,20 @@ export default function MainNav() {
               />
               <span className="text-lg hidden phone:block font-medium text-gray-100 group-hover:text-white">
                 Online
+              </span>
+            </Link>
+          </li>
+          <li className="flex w-full phone:block">
+            <Link
+              href="/profile"
+              className="flex gap-4 justify-center phone:justify-normal items-center py-2 px-4 phone:rounded-lg hover:bg-gray-800/60 transition-colors w-full group"
+            >
+              <IoPersonOutline
+                size={24}
+                className="text-blue-400 group-hover:text-blue-300 transition-colors"
+              />
+              <span className="text-lg hidden phone:block font-medium text-gray-100 group-hover:text-white">
+                Profile
               </span>
             </Link>
           </li>
