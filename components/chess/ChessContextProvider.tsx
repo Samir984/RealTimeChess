@@ -97,7 +97,7 @@ export default function ChesstContextProvider({
       // Check if there's a captured piece
       if (move && move.captured === undefined) {
         const cpp = calculatePoints(capturedPieces);
-        // console.log(capturedPieces, capturedPiecePoints, 'nocapture\n\n\n\n');
+        // console.log(capturedPieces, capturedPiecePoints, "nocapture\n\n\n\n");
         return { cp: capturedPieces, cpp };
       } else {
         // If there is no captured piece, handle the regular move
@@ -263,6 +263,14 @@ export default function ChesstContextProvider({
   // for communication after connetion
   useEffect(() => {
     if (!socket) return;
+    let checkOpponentStatus: any;
+    checkOpponentStatus = setInterval(() => {
+      if (game.turn().toUpperCase() !== side) {
+        // console.log("check status", game.turn(), side);
+        toast.success(`check status i  ${game.turn().toUpperCase()}, ${side}`);
+      }
+    }, 10000);
+
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data as string);
 
@@ -282,18 +290,11 @@ export default function ChesstContextProvider({
           toast.error(`Connection closed: ${data.message}`);
       }
     };
-  }, [
-    socket,
-    makeAMove,
-    previousGameState,
-    restrictMove,
-    viewPreviousGameState,
-    game,
-  ]);
+  }, [game, makeAMove, side, socket]);
 
   useEffect(() => {
     if (game.isGameOver()) {
-     //effect for game over
+      //effect for game over
     }
   }, [game]);
 

@@ -4,7 +4,7 @@ import { useGameContext } from "./ChessContextProvider";
 import { useEffect, useState, useCallback, useMemo } from "react";
 import CustomeKingPieces, { KingStatus } from "./CustomeKingPieces";
 import { Chess } from "chess.js";
-import { toast } from "react-toastify";
+
 
 export default function ChessBoard({
   orientation,

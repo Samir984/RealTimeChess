@@ -4,7 +4,7 @@ import React from "react";
 import GameQuitButton from "./buttons/GameQuitButton";
 import { useGameContext } from "./chess/ChessContextProvider";
 import OpponenetCapturePieces from "./OpponenetCapturePieces";
-
+import { useSocket } from "@/provider/SocketProvider";
 
 type OpponentLabelType = {
   name: string;
@@ -19,11 +19,11 @@ export default function OpponentLabel({
   opponentSide: "W" | "B";
 }) {
   //hard coded
+  const { socket } = useSocket();
   const side = opponentSide;
   const { capturedPieces } = useGameContext();
 
-
-  // reverse 
+  // reverse
 
   const anotherPlayerLoosePieces = capturedPieces[side];
 
@@ -41,10 +41,22 @@ export default function OpponentLabel({
           className="border-1 phone:w-12 phone:h-14 w-10 h-10  border-gray-700"
         />
         <div className="grid grid-rows-2 phone:gap-1 ">
-          <span className="text-sm font-light phone:font-bold self-end phone:self-start ">
-            {name || "Opponent"}
-          </span>
-           <OpponenetCapturePieces pieces={anotherPlayerLoosePieces}   side={side} />
+          <div className="text-sm flex gap-4 justify-center items-center font-light phone:font-bold self-end phone:self-start ">
+            <span>{name || "Opponent"}</span>
+            {socket && (
+              <div className="flex items-center gap-2 self-start">
+                <span className="w-3 h-3 bg-green-400 rounded-full self-center"></span>
+                <span className="text-xs phone:text-sm font-light  text-gray-200">
+                  online
+                </span>
+              </div>
+            )}
+          </div>
+
+          <OpponenetCapturePieces
+            pieces={anotherPlayerLoosePieces}
+            side={side}
+          />
         </div>
       </div>
       {isUser ? <GameQuitButton /> : ""}

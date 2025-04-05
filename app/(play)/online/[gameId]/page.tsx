@@ -26,6 +26,7 @@ export default function PlayOnline() {
       <ChesstContextProvider>
         <div className="flex justify-evenly gap-2  laptop:flex-row flex-col  ">
           <div className="flex tablet:flex-1 flex-col">
+            {/* this is opponenet player */}
             <OpponenetLabel
               opponentLabel={joinMessage.opponent}
               opponentSide={opponentSide}
@@ -33,6 +34,7 @@ export default function PlayOnline() {
             <ChessBoard
               orientation={joinMessage.side == "W" ? "white" : "black"}
             />
+            {/* this is  you */}
             <YourLabel yourSide={joinMessage.side} />
           </div>
           <div className="flex-1  px-1">
