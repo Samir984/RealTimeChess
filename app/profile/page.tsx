@@ -2,6 +2,8 @@
 // app/page.tsx
 import { auth } from "@/libs/auth";
 import React from "react";
+import Link from "next/link";
+import GoogleSigninButton from "@/components/buttons/GooleSigninButton";
 
 interface ProfileData {
   first_name: string;
@@ -12,12 +14,37 @@ interface ProfileData {
   no_of_games_played: number;
   coins: number;
   game_point: number;
+  won_matches_count?: number; // Add this if your API returns it
 }
 console.log(process.env.BASE_URL);
 export default async function ProfilePage() {
   const session = await auth();
   const userId = session?.user?.userId;
   console.log("profile page", session, "profile page");
+
+  // Logic for when the user is not logged in
+  if (!session || !userId) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center p-4">
+        <div className=" p-8 rounded-xl shadow-xl border border-yellow-600/20 backdrop-blur-sm max-w-md w-full text-center">
+          <h2 className="text-3xl font-bold text-white mb-3">
+            You are not logged in
+          </h2>
+          <p className="text-gray-400 mb-4">
+            To view your profile, please log in to your account.
+          </p>
+
+          <div className="flex justify-center">
+            <div className="px-4 flex items-center justify-center border-2 border-gray-700  hover:border-yellow-500 rounded-lg transition-all duration-300 ">
+              <GoogleSigninButton />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Logic for when the user is logged in, fetch profile data
   const response = await fetch(`${process.env.BASE_URL}api/profile/${userId}`, {
     cache: "no-store",
   });
@@ -65,8 +92,8 @@ export default async function ProfilePage() {
             ) : (
               <div className="w-40 h-40 rounded-full bg-gray-700 flex items-center justify-center border-4 border-blue-500 shadow-lg backdrop-blur-sm bg-white/10">
                 <span className="text-4xl text-white font-bold">
-                  {data.first_name[0]}
-                  {data.last_name[0]}
+                  {data.first_name?.[0]}
+                  {data.last_name?.[0]}
                 </span>
               </div>
             )}
@@ -104,7 +131,7 @@ export default async function ProfilePage() {
               </div>
               <div className="bg-gray-800/50 p-5 rounded-xl hover:bg-gray-800/70 transition-colors border border-gray-700 backdrop-blur-sm  shadow-md hover:shadow-lg">
                 <p className="text-gray-400 text-sm font-medium">Game wons</p>
-                <p className="text-yellow-400 font-semibold mt-1 flex items-center">
+                <p className="text-green-400 font-semibold mt-1 flex items-center">
                   <span className="mr-2 text-lg">🏆</span>
                   {data.won_matches_count || 0}
                 </p>
