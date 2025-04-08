@@ -12,6 +12,8 @@ import { MakeSound } from "@/utils/sound";
 import { useSocket } from "@/provider/SocketProvider";
 import { toast } from "react-toastify";
 import { calculatePoints } from "@/utils/helper";
+import { userAgent } from "next/server";
+import OpponenetCapturePieces from "../OpponenetCapturePieces";
 
 // Type Definitions
 interface PreviousGameState {
@@ -265,14 +267,24 @@ export default function ChesstContextProvider({
     if (!socket) return;
     let checkOpponentStatus: any;
     checkOpponentStatus = setInterval(() => {
-      if (game.turn().toUpperCase() !== side) {
-        // console.log("check status", game.turn(), side);
-        toast.success(`check status i  ${game.turn().toUpperCase()}, ${side}`);
-      }
-    }, 10000);
+      // if (game.turn().toUpperCase() !== side) {
+      // console.log("check status", game.turn(), side);
+      // toast.success(`check status i  ${game.turn().toUpperCase()}, ${side}`);
+      socket?.send(
+        JSON.stringify({
+          type: "checkOpponentPlayerStatus",
+          data: {
+            gameId: joinMessage?.gameId,
+            //sider of the player which status should be checked
+          },
+        })
+      );
+      // }
+    }, 30000);
 
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data as string);
+      console.log(data, "socket message\n\n\n\n\n\n see this");
 
       switch (data.type) {
         case "move":
@@ -280,17 +292,23 @@ export default function ChesstContextProvider({
           makeAMove(data.move, false);
           break;
 
+        case "quit":
+          console.log(data);
+          toast.error(`Connection closed: ${data.message}`);
+
+        case "opponentPlayerConnectionLost":
+          console.log("checkOpponentPlayerStatus 23");
+          toast.error("checkOpponentPlayerStatus");
+          break;
+
         case "unknown":
           console.log(data);
           toast.error(`Connection closed: ${data.message}`);
           break;
-
-        case "quit":
-          console.log(data);
-          toast.error(`Connection closed: ${data.message}`);
       }
     };
-  }, [game, makeAMove, side, socket]);
+    return () => clearInterval(checkOpponentStatus);
+  }, [game, joinMessage?.gameId, makeAMove, side, socket]);
 
   useEffect(() => {
     if (game.isGameOver()) {
