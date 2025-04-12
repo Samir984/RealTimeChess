@@ -20,9 +20,6 @@ export default function PlayOnline() {
 
   return (
     <div className=" text-white min-h-screen py-3">
-      <h1 className="text-2xl text-center tablet:text-3xl laptop:text-4xl font-bold mb-2 laptop:mb-6">
-        Online Mode
-      </h1>
       <ChesstContextProvider>
         <div className="flex justify-evenly gap-2  laptop:flex-row flex-col  ">
           <div className="flex tablet:flex-1 flex-col">

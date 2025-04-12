@@ -31,10 +31,6 @@ export default function Page() {
     <div className="text-white py-8 relative min-h-screen flex flex-col items-center">
       <ConnectionNote />
       <div className="flex flex-col justify-center items-center mt-32 px-4">
-        <h1 className="text-2xl phone:text-3xl laptop:text-4xl text-slate-200 font-extrabold mb-5 phone:mb-10 text-center leading-tight">
-          Connection with Player
-        </h1>
-
         <ConnectionButtons userId={session?.user?.userId} />
 
         <div className="flex flex-col items-center">

@@ -6,13 +6,13 @@ import React, {
   useEffect,
   ReactNode,
   useCallback,
+  useRef,
 } from "react";
 import { Chess, Move, Square } from "chess.js";
 import { MakeSound } from "@/utils/sound";
 import { useSocket } from "@/provider/SocketProvider";
 import { toast } from "react-toastify";
 import { calculatePoints } from "@/utils/helper";
-import { userAgent } from "next/server";
 import OpponenetCapturePieces from "../OpponenetCapturePieces";
 
 // Type Definitions
@@ -66,6 +66,7 @@ export default function ChesstContextProvider({
   const { socket, joinMessage } = useSocket();
   const [side, setSide] = useState<undefined | "B" | "W" | "noMove">(undefined);
   const [restrictMove, setRestrictMove] = useState(false);
+  const connectionChekingTime = useRef<number>();
 
   const [game, setGame] = useState<Chess>(new Chess());
   const [validMoves, setValidMoves] = useState<string[]>([]);
@@ -270,6 +271,7 @@ export default function ChesstContextProvider({
       // if (game.turn().toUpperCase() !== side) {
       // console.log("check status", game.turn(), side);
       // toast.success(`check status i  ${game.turn().toUpperCase()}, ${side}`);
+      console.log("checkOpponentPlayerStatus send");
       socket?.send(
         JSON.stringify({
           type: "checkOpponentPlayerStatus",
@@ -280,7 +282,7 @@ export default function ChesstContextProvider({
         })
       );
       // }
-    }, 30000);
+    }, connectionChekingTime.current);
 
     socket.onmessage = (e) => {
       const data = JSON.parse(e.data as string);
@@ -318,8 +320,9 @@ export default function ChesstContextProvider({
 
   // to set side
   useEffect(() => {
-    console.log("game side effect", joinMessage?.side);
+    if(!joinMessage?.side) return;
     setSide(joinMessage?.side as "B" | "W");
+    connectionChekingTime.current=joinMessage?.side==="W"?35000:30000;
   }, [joinMessage?.side]);
 
   return (
